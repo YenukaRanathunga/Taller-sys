@@ -1,0 +1,35 @@
+// Sample C# class for a bank account
+public class BankAccount
+{
+    public int AccountNumber { get; set; }
+    public string AccountHolder { get; set; }
+    public decimal Balance { get; private set; }
+
+    public BankAccount(int accountNumber, string accountHolder, decimal initialBalance)
+    {
+        AccountNumber = accountNumber;
+        AccountHolder = accountHolder;
+        Balance = initialBalance;
+    }
+
+    public bool Withdraw(decimal amount)
+    {
+        if (amount > Balance)
+        {
+            return false; // Insufficient funds
+        }
+
+        Balance -= amount;
+        return true; // Successful withdrawal
+    }
+
+    public void Deposit(decimal amount)
+    {
+        Balance += amount;
+    }
+
+    public decimal GetBalance()
+    {
+        return Balance;
+    }
+}
