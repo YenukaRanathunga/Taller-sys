@@ -1,0 +1,42 @@
+CREATE DATABASE BankTellerSystem;
+GO
+
+USE BankTellerSystem;
+GO
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY IDENTITY(1,1),
+    FirstName NVARCHAR(50),
+    LastName NVARCHAR(50),
+    Email NVARCHAR(100),
+    Phone NVARCHAR(15),
+    Address NVARCHAR(255),
+    CreatedDate DATETIME DEFAULT GETDATE()
+);
+CREATE TABLE Accounts (
+    AccountID INT PRIMARY KEY IDENTITY(1,1),
+    CustomerID INT FOREIGN KEY REFERENCES Customers(CustomerID),
+    AccountNumber NVARCHAR(20) UNIQUE,
+    AccountType NVARCHAR(50),
+    Balance DECIMAL(18, 2) DEFAULT 0.00,
+    CreatedDate DATETIME DEFAULT GETDATE()
+);
+CREATE TABLE Transactions (
+    TransactionID INT PRIMARY KEY IDENTITY(1,1),
+    AccountID INT FOREIGN KEY REFERENCES Accounts(AccountID),
+    TransactionType NVARCHAR(50),
+    Amount DECIMAL(18, 2),
+    TransactionDate DATETIME DEFAULT GETDATE(),
+    Description NVARCHAR(255)
+);
+INSERT INTO Customers (FirstName, LastName, Email, Phone, Address)
+VALUES ('John', 'Doe', 'johndoe@example.com', '123-456-7890', '123 Elm St, Anytown, USA'),
+       ('Jane', 'Smith', 'janesmith@example.com', '098-765-4321', '456 Oak St, Othertown, USA');
+INSERT INTO Accounts (CustomerID, AccountNumber, AccountType, Balance)
+VALUES (1, '1234567890', 'Savings', 1000.00),
+       (2, '0987654321', 'Checking', 500.00);
+INSERT INTO Transactions (AccountID, TransactionType, Amount, Description)
+VALUES (1, 'Deposit', 100.00, 'Initial Deposit'),
+       (1, 'Withdrawal', 50.00, 'ATM Withdrawal'),
+       (2, 'Deposit', 200.00, 'Initial Deposit'),
+       (2, 'Withdrawal', 30.00, 'ATM Withdrawal');
+SELECT * FROM Customers;
